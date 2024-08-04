@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: pg_db-homework3-rest
+    image: postgres:alpine3.18
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: attractions_db
+    command:
+      - "postgres"
+      - "-c"
+      - "port=5435"
+    volumes:
+      - /var/lib/postgresql/data
+    ports:
+      - "5435:5435"
+
+  pgadmin:
+    container_name: pg_admin-task-rest
+    image: dpage/pgadmin4:latest
+    environment:
+      PGADMIN_DEFAULT_EMAIL: PGadmin@gmail.com
+      PGADMIN_DEFAULT_PASSWORD: PGadmin
+    ports:
+      - "5055:80"
+    depends_on:
+      - db
+
+volumes:
+  pg_data:

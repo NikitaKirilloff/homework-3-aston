@@ -1,0 +1,395 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: kirillov
+      changes:
+        - createTable:
+            tableName: city
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: population
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_metro
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: 2
+      author: kirillov
+      changes:
+        - createTable:
+            tableName: attraction
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date_of_creation
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addForeignKeyConstraint:
+            baseColumnNames: city_id
+            baseTableName: attraction
+            constraintName: fk_attraction_city
+            referencedColumnNames: id
+            referencedTableName: city
+
+  - changeSet:
+      id: 3
+      author: kirillov
+      changes:
+        - createTable:
+            tableName: service
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: TEXT
+
+  - changeSet:
+      id: 4
+      author: kirillov
+      changes:
+        - createTable:
+            tableName: attraction_service
+            columns:
+              - column:
+                  name: attraction_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: service_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+        - addPrimaryKey:
+            columnNames: attraction_id,service_id
+            constraintName: pk_attraction_service
+            tableName: attraction_service
+        - addForeignKeyConstraint:
+            baseColumnNames: attraction_id
+            baseTableName: attraction_service
+            constraintName: fk_attraction_service_attraction
+            referencedColumnNames: id
+            referencedTableName: attraction
+        - addForeignKeyConstraint:
+            baseColumnNames: service_id
+            baseTableName: attraction_service
+            constraintName: fk_attraction_service_service
+            referencedColumnNames: id
+            referencedTableName: service
+
+  - changeSet:
+      id: 5
+      author: kirillov
+      changes:
+        - insert:
+            tableName: city
+            columns:
+              - column:
+                  name: name
+                  value: "Москва"
+              - column:
+                  name: population
+                  value: 13149803
+              - column:
+                  name: has_metro
+                  valueBoolean: true
+  - changeSet:
+      id: 6
+      author: kirillov
+      changes:
+        - insert:
+            tableName: attraction
+            columns:
+              - column:
+                  name: name
+                  value: "Третьяковская галерея"
+              - column:
+                  name: date_of_creation
+                  value: "1865-01-01"
+              - column:
+                  name: description
+                  value: "Российский государственный художественный музей в Москве, созданный на
+                   основе исторических коллекций купцов братьев Павла и Сергея Михайловичей 
+                   Третьяковых; одно из крупнейших в мире собраний русского изобразительного
+                    искусства"
+              - column:
+                  name: type
+                  value: "MUSEUM"
+              - column:
+                  name: city_id
+                  value: 1
+  - changeSet:
+      id: 7
+      author: kirillov
+      changes:
+        - insert:
+            tableName: attraction
+            columns:
+              - column:
+                  name: name
+                  value: "Сокольники"
+              - column:
+                  name: date_of_creation
+                  value: "1878-01-01"
+              - column:
+                  name: description
+                  value: "Парк на территории района Сокольники на востоке Москвы. Площадь парка
+                   — 516 гектаров. В XVI—XVII веках на месте сегодняшнего парка проходили царские
+                    и великокняжеские соколиные охоты, откуда место и получило своё название."
+              - column:
+                  name: type
+                  value: "PARK"
+              - column:
+                  name: city_id
+                  value: 1
+  - changeSet:
+      id: 8
+      author: kirillov
+      changes:
+        - insert:
+            tableName: city
+            columns:
+              - column:
+                  name: name
+                  value: "Санкт-Петербург"
+              - column:
+                  name: population
+                  value: 5597763
+              - column:
+                  name: has_metro
+                  valueBoolean: true
+  - changeSet:
+      id: 9
+      author: kirillov
+      changes:
+        - insert:
+            tableName: attraction
+            columns:
+              - column:
+                  name: name
+                  value: "Зимний дворец"
+              - column:
+                  name: date_of_creation
+                  value: "1762-01-01"
+              - column:
+                  name: description
+                  value: "Главный императорский дворец России, расположенный на Дворцовой площади в
+                   Санкт-Петербурге. Здание дворца (пятое по счёту) было построено в 1754—1762 годах
+                    российским архитектором итальянского происхождения Бартоломео Франческо
+                     Растрелли в стиле пышного елизаветинского барокко с элементами французского
+                      рококо в интерьерах"
+              - column:
+                  name: type
+                  value: "PALACE"
+              - column:
+                  name: city_id
+                  value: 2
+  - changeSet:
+      id: 10
+      author: kirillov
+      changes:
+        - insert:
+            tableName: attraction
+            columns:
+              - column:
+                  name: name
+                  value: "Кунсткамера"
+              - column:
+                  name: date_of_creation
+                  value: "1714-01-01"
+              - column:
+                  name: description
+                  value: "Музе́й антрополо́гии и этногра́фии имени Петра Великого Российской академии
+                   наук, также известный под историческим названием Кунстка́мера — российский
+                    государственный естественно-научный музей в Санкт-Петербурге, учреждённый Петром
+                     Великим в 1714 году. Исторически первый в России публичный музей, Кунсткамера
+                      обладает уникальной коллекцией предметов старины, раскрывающих историю и быт
+                       многих народов. Но многим этот музей известен своей «особенной» коллекцией
+                        анатомических редкостей и аномалий. Здание Кунсткамеры — памятник 
+                        архитектуры петровского барокко, со времени строительства ставший символом
+                         Российской академии наук, объект культурного наследия федерального 
+                         значения. Башню Кунсткамеры венчает Армиллярная сфера"
+              - column:
+                  name: type
+                  value: "MUSEUM"
+              - column:
+                  name: city_id
+                  value: 2
+  - changeSet:
+      id: 11
+      author: kirillov
+      changes:
+        - insert:
+            tableName: service
+            columns:
+              - column:
+                  name: name
+                  value: "Экскурсия в музее"
+              - column:
+                  name: description
+                  value: "Организованная экскурсия."
+                  
+  - changeSet:
+      id: 12
+      author: kirillov
+      changes:
+        - insert:
+            tableName: service
+            columns:
+              - column:
+                  name: name
+                  value: "Экскурсия во дворце"
+              - column:
+                  name: description
+                  value: "Организованная экскурсия."
+
+  - changeSet:
+      id: 13
+      author: kirillov
+      changes:
+        - insert:
+            tableName: service
+            columns:
+              - column:
+                  name: name
+                  value: "Гид"
+              - column:
+                  name: description
+                  value: "Услуга профессионального гида."
+
+  - changeSet:
+      id: 14
+      author: kirillov
+      changes:
+        - insert:
+            tableName: attraction_service
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "1" # ID "Третьяковская галерея"
+              - column:
+                  name: service_id
+                  value: "1" # ID "Экскурсия в музее"
+
+  - changeSet:
+      id: 15
+      author: kirillov
+      changes:
+        - insert:
+            tableName: attraction_service
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "1" # ID "Третьяковская галерея"
+              - column:
+                  name: service_id
+                  value: "3" # ID "Гид"
+
+  - changeSet:
+      id: 16
+      author: kirillov
+      changes:
+        - insert:
+            tableName: attraction_service
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "2" # ID "Сокольники"
+              - column:
+                  name: service_id
+                  value: "3" # ID "Гид"
+
+  - changeSet:
+      id: 17
+      author: kirillov
+      changes:
+        - insert:
+            tableName: attraction_service
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "3"
+              - column:
+                  name: service_id
+                  value: "2"
+  - changeSet:
+      id: 18
+      author: kirillov
+      changes:
+        - insert:
+            tableName: attraction_service
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "4"
+              - column:
+                  name: service_id
+                  value: "1"
+  - changeSet:
+      id: 19
+      author: kirillov
+      changes:
+        - insert:
+            tableName: service
+            columns:
+              - column:
+                  name: name
+                  value: "ГАСТРОЛИ МХТ им. Чехова «Маскарад с закрытыми глазами»"
+              - column:
+                  name: description
+                  value: "Культурное мероприятие."
+
+
